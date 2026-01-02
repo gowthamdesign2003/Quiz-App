@@ -1,7 +1,13 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // webpack: (config) => {
+  //   config.externals = [...(config.externals || []), "fs", "path"];
+  //   return config;
+  // },
+turbopack: {
+    // ...
+  },
 };
 
 export default nextConfig;

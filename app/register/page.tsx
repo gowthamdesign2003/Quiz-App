@@ -1,10 +1,10 @@
 "use client";
 import { useState } from "react";
 import axios from "axios";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 
 export default function Register() {
-  const router = useRouter();
+  // const router = useRouter();
   const [form, setForm] = useState({ name: "", email: "", password: "" });
 
   const doRegister = async () => {
@@ -12,7 +12,7 @@ export default function Register() {
       const res = await axios.post("/api/auth/register", form);
       if (res.status === 200) {
         alert("Account created successfully!");
-        router.push("/dashboard");
+         window.location.href = "/dashboard";
       }
     } catch (error) {
       alert("Registration failed! Check details.");

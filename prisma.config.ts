@@ -1,10 +1,9 @@
-import "dotenv/config";
+import { config } from "dotenv";
 import { defineConfig } from "prisma/config";
-
+config();
 export default defineConfig({
   schema: "./prisma/schema.prisma",
   datasource: {
-    provider: "postgresql",
     url: process.env.DATABASE_URL, // 👈 FIXED: use .env
   },
 });

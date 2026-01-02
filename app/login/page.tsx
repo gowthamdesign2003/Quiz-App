@@ -7,10 +7,10 @@ export default function Login() {
 
   const doLogin = async () => {
     try {
-      // const res = await axios.post("/api/auth/login", form);
+      const res = await axios.post("/api/auth/login", form);
 
-      // Save token in browser
-      // localStorage.setItem("token", res.data.token);
+     
+      localStorage.setItem("token", res.data.token);
 
       alert("Login successful!");
 
@@ -18,7 +18,7 @@ export default function Login() {
       window.location.href = "/dashboard";
 
     } catch (error: any) {
-      // alert(error.response?.data?.error || "Login failed");
+      alert(error.response?.data?.error || "Login failed");
     }
   };
 
