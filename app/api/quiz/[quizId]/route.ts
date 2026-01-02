@@ -3,13 +3,22 @@ import prisma from "@/lib/prisma";
 
 export async function GET(
   req: Request,
-  { params }: { params: { quizId: string } }
+  { params }: { params: Promise<{ quizId: string }> }
 ) {
   try {
-    const quizId = Number(params.quizId);
+    // ✅ MUST await params in Next.js 16
+    const { quizId } = await params;
+    const id = Number(quizId);
+
+    if (isNaN(id)) {
+      return NextResponse.json(
+        { error: "Invalid quiz ID" },
+        { status: 400 }
+      );
+    }
 
     const quiz = await prisma.quiz.findUnique({
-      where: { id: quizId },
+      where: { id },
       include: { questions: true },
     });
 
@@ -21,8 +30,8 @@ export async function GET(
     }
 
     return NextResponse.json(quiz);
-  } catch (err) {
-    console.error("FETCH QUIZ ERROR:", err);
+  } catch (error) {
+    console.error("FETCH QUIZ ERROR:", error);
     return NextResponse.json(
       { error: "Failed to fetch quiz" },
       { status: 500 }
