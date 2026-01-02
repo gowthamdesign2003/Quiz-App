@@ -19,6 +19,7 @@ export default function Register() {
     }
   };
 
+  
   return (
     <div className="max-w-sm mx-auto mt-20 p-6 bg-gray-900 rounded-lg text-white">
       <h2 className="text-2xl font-bold mb-5 text-center">Create Account</h2>
@@ -41,6 +42,7 @@ export default function Register() {
         placeholder="Password"
         onChange={(e) => setForm({ ...form, password: e.target.value })}
       />
+
 
       <button
         className="w-full bg-indigo-600 py-2 rounded mt-2"

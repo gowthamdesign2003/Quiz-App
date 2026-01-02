@@ -22,16 +22,18 @@ export async function POST(req: Request) {
     }
 
     // Create JWT Token
-    const token = jwt.sign(
-      { id: user.id, email: user.email }, 
-      JWT_SECRET,
-      { expiresIn: "1h" } // token valid for 1 hour
-    );
 
-    return NextResponse.json(
-      { message: "Login successful", token },
-      { status: 200 }
-    );
+const token = jwt.sign(
+  {
+    userId: user.id,   // ✅ MUST be userId
+    email: user.email,
+  },
+  process.env.JWT_SECRET!, // ✅ SAME secret everywhere
+  { expiresIn: "7d" }
+);
+
+return NextResponse.json({ token });
+
 
   } catch (error: any) {
     console.error("LOGIN ERROR:", error);

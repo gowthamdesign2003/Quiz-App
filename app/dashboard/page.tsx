@@ -23,29 +23,34 @@ export default function Dashboard() {
   };
 
   const createQuiz = async () => {
-    if (!topic || count < 5 || count > 20) {
-      alert("Please enter valid quiz details");
-      return;
-    }
+  if (!topic || count < 5 || count > 20) {
+    alert("Please enter valid quiz details");
+    return;
+  }
 
-    try {
-      setLoading(true);
-      await axios.post("/api/quiz/create", {
-        topic,
-        numberOfQuestions: count,
-        difficulty,
-      });
+  try {
+    setLoading(true);
 
-      alert("Quiz created successfully!");
-      setTopic("");
-      setCount(5);
-      setDifficulty("easy");
-    } catch (err) {
-      alert("Failed to create quiz");
-    } finally {
-      setLoading(false);
-    }
-  };
+    const res = await axios.post("/api/quiz/create", {
+      topic,
+      numberOfQuestions: count,
+      difficulty,
+    });
+
+    router.push(`/quiz/${res.data.quizId}`);
+  } catch (err: any) {
+    console.error("CREATE QUIZ ERROR:", err.response?.data || err);
+    alert("Failed to create quiz");
+  } finally {
+    setLoading(false);
+  }
+};
+
+
+
+
+
+
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
