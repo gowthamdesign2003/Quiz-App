@@ -5,7 +5,7 @@ import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-// -- Types --
+
 
 interface LoginForm {
   email: string;
@@ -15,18 +15,13 @@ interface LoginForm {
 export default function Login() {
   const router = useRouter();
 
-  // -- State --
+
 
   const [form, setForm] = useState<LoginForm>({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // -- Handlers --
-
-  /**
-   * Handles the login form submission.
-   * Sends credentials to the API and redirects to dashboard on success.
-   */
+ 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -35,10 +30,8 @@ export default function Login() {
     try {
       const res = await axios.post("/api/auth/login", form);
 
-      // Store token (consider using HttpOnly cookies in production for better security)
       localStorage.setItem("token", res.data.token);
 
-      // Redirect to dashboard
       router.push("/dashboard");
     } catch (error: any) {
       console.error("Login Error:", error);
@@ -50,36 +43,32 @@ export default function Login() {
     }
   };
 
-  /**
-   * Updates form state on input change.
-   */
+  
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { type, value } = e.target;
-    // Map input type to state key if names match, or use specific logic
-    // Here we can just use the state update directly in the input's onChange for simplicity,
-    // or use a generic handler if we add name attributes.
+
   };
 
-  // -- Render --
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-indigo-950 p-4">
       <div className="w-full max-w-md bg-gray-900/80 backdrop-blur-sm p-8 rounded-2xl shadow-2xl border border-gray-700">
         
-        {/* Header */}
+       
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-white mb-2">Welcome Back</h1>
           <p className="text-gray-400">Sign in to continue your quiz journey</p>
         </div>
 
-        {/* Error Message */}
+        
         {error && (
           <div className="mb-6 p-4 bg-red-500/10 border border-red-500/50 rounded-lg text-red-400 text-sm text-center">
             {error}
           </div>
         )}
 
-        {/* Login Form */}
+       
         <form onSubmit={handleLogin} className="space-y-6">
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-2">
@@ -146,7 +135,7 @@ export default function Login() {
           </button>
         </form>
 
-        {/* Footer */}
+        
         <p className="text-center mt-8 text-gray-400">
           Don't have an account?{" "}
           <Link

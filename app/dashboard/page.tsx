@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 
-// -- Types --
+
 interface QuizAttempt {
   id: number;
   quizId: number;
@@ -25,7 +25,6 @@ interface UserProfile {
 export default function Dashboard() {
   const router = useRouter();
 
-  // -- State --
   const [topic, setTopic] = useState("");
   const [countRange, setCountRange] = useState("5-10");
   const [difficulty, setDifficulty] = useState("easy");
@@ -34,7 +33,7 @@ export default function Dashboard() {
   const [history, setHistory] = useState<QuizAttempt[]>([]);
   const [userName, setUserName] = useState("");
 
-  // -- Effects --
+  
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -42,7 +41,7 @@ export default function Dashboard() {
       return;
     }
 
-    // Load user data and quiz history
+
     const fetchData = async () => {
       try {
         const [historyRes, userRes] = await Promise.all([
@@ -54,24 +53,21 @@ export default function Dashboard() {
         setUserName(userRes.data.name);
       } catch (error) {
         console.error("Failed to load dashboard data:", error);
-        // Optional: Redirect to login if 401
+       
       }
     };
 
     fetchData();
   }, [router]);
 
-  // -- Handlers --
+
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     router.replace("/login");
   };
 
-  /**
-   * Generates a random number of questions based on the selected range.
-   * e.g., "5-10" -> random int between 5 and 10.
-   */
+
   const getQuestionCount = (range: string): number => {
     const [min, max] = range.split("-").map(Number);
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -104,7 +100,7 @@ export default function Dashboard() {
     }
   };
 
-  // -- Render Helpers --
+ 
   
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
@@ -145,15 +141,15 @@ export default function Dashboard() {
       <main className="p-6 md:p-8 max-w-7xl mx-auto">
         <div className="flex flex-col gap-8">
           
-          {/* Create Quiz Form */}
+         
           <div>
             <div className="bg-gray-900/60 backdrop-blur-sm p-6 rounded-2xl shadow-xl border border-gray-700">
               <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
-                <span className="text-2xl">✨</span> Create New Quiz
+               Create New Quiz
               </h2>
 
               <div className="space-y-5">
-                {/* Topic Input */}
+              
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-2">
                     Topic
@@ -224,7 +220,7 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* Past Quizzes */}
+          
           <div>
             <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
                Past Quizzes
@@ -243,7 +239,7 @@ export default function Dashboard() {
                     onClick={() => router.push(`/quiz/history/${attempt.id}`)}
                     className="group bg-gray-900/60 backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-gray-700 cursor-pointer"
                   >
-                    {/* Card Header */}
+                    
                     <div className="flex justify-between items-start mb-4">
                       <h3 className="text-xl font-bold text-white line-clamp-1" title={attempt.quiz.topic}>
                         {attempt.quiz.topic}
@@ -253,7 +249,7 @@ export default function Dashboard() {
                       </span>
                     </div>
 
-                    {/* Card Details */}
+                   
                     <div className="space-y-3 mt-4 pt-4 border-t border-gray-800">
                       <div className="flex justify-between text-sm">
                         <span className="text-gray-400">Date</span>

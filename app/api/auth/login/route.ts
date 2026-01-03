@@ -7,13 +7,13 @@ export async function POST(req: Request) {
   try {
     const { email, password } = await req.json();
 
-    // 1. Find user
+    
     const user = await prisma.user.findUnique({ where: { email } });
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    // 2. Compare password
+    
     const validPassword = await bcrypt.compare(password, user.password);
     if (!validPassword) {
       return NextResponse.json(
@@ -22,7 +22,7 @@ export async function POST(req: Request) {
       );
     }
 
-    // 3. Create JWT Token
+    //jwt
     const secret = process.env.JWT_SECRET || "mysecretkey"; // Fallback for dev
     const token = jwt.sign(
       {

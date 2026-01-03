@@ -9,7 +9,7 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // @ts-expect-error - quizAttempt type missing in generated client but exists at runtime
+    // @ts-expect-error - quizAttempt 
     const attempts = await prisma.quizAttempt.findMany({
       where: {
         userId: user.userId,

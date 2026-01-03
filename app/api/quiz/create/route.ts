@@ -12,7 +12,7 @@ export async function POST(req: Request) {
     const user = getUserFromToken(req); // Link quiz to user if logged in
     const { topic, numberOfQuestions, difficulty } = await req.json();
 
-    // 1. Validation
+    
     if (
       !topic ||
       typeof topic !== "string" ||
@@ -25,7 +25,7 @@ export async function POST(req: Request) {
       );
     }
 
-    // 2. Create Quiz Record
+    
     const quiz = await prisma.quiz.create({
       data: {
         topic,
@@ -35,7 +35,7 @@ export async function POST(req: Request) {
       },
     });
 
-    // 3. AI Prompt (Request JSON format)
+  
     let questions = [];
 
     try {
@@ -53,7 +53,7 @@ Return EXACTLY this structure:
       "correctAnswer": "A"
     }
   ]
-}
+}  
 
 Topic: ${topic}
 Difficulty: ${difficulty}

@@ -6,7 +6,7 @@ export async function GET(
   { params }: { params: Promise<{ quizId: string }> }
 ) {
   try {
-    // Await params as required in Next.js 15+
+    
     const { quizId } = await params;
     const id = Number(quizId);
 

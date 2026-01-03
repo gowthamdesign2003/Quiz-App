@@ -5,7 +5,7 @@ import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-// -- Types --
+
 
 interface RegisterForm {
   name: string;
@@ -16,7 +16,7 @@ interface RegisterForm {
 export default function Register() {
   const router = useRouter();
 
-  // -- State --
+ 
 
   const [form, setForm] = useState<RegisterForm>({
     name: "",
@@ -26,12 +26,7 @@ export default function Register() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // -- Handlers --
-
-  /**
-   * Handles the registration form submission.
-   * Sends user details to the API and redirects to login on success.
-   */
+ 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -54,26 +49,26 @@ export default function Register() {
     }
   };
 
-  // -- Render --
+ 
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-indigo-950 p-4">
       <div className="w-full max-w-md bg-gray-900/80 backdrop-blur-sm p-8 rounded-2xl shadow-2xl border border-gray-700">
         
-        {/* Header */}
+        
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-white mb-2">Create Account</h1>
           <p className="text-gray-400">Join us and start your quiz journey</p>
         </div>
 
-        {/* Error Message */}
+       
         {error && (
           <div className="mb-6 p-4 bg-red-500/10 border border-red-500/50 rounded-lg text-red-400 text-sm text-center">
             {error}
           </div>
         )}
 
-        {/* Register Form */}
+      
         <form onSubmit={handleRegister} className="space-y-6">
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-2">
@@ -153,7 +148,7 @@ export default function Register() {
           </button>
         </form>
 
-        {/* Footer */}
+        
         <p className="text-center mt-8 text-gray-400">
           Already have an account?{" "}
           <Link

@@ -7,7 +7,7 @@ export async function POST(req: Request) {
     const body = await req.json();
     const { name, email, password } = body;
 
-    // 1. Validation
+    // val
     if (!name || !email || !password) {
       return NextResponse.json(
         { error: "All fields are required" },
@@ -15,7 +15,7 @@ export async function POST(req: Request) {
       );
     }
 
-    // 2. Check existing user
+    
     const existingUser = await prisma.user.findUnique({
       where: { email },
     });
@@ -27,10 +27,10 @@ export async function POST(req: Request) {
       );
     }
 
-    // 3. Hash password
+  
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // 4. Create user
+
     await prisma.user.create({
       data: {
         name,

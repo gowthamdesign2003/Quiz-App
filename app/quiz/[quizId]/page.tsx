@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
 
-// -- Types --
+
 
 interface Question {
   id: number;
@@ -23,18 +23,14 @@ export default function QuizPage() {
   const { quizId } = useParams();
   const router = useRouter();
 
-  // -- State --
+  
   const [quiz, setQuiz] = useState<Quiz | null>(null);
   const [selectedAnswers, setSelectedAnswers] = useState<Record<number, string>>({});
   const [score, setScore] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  // -- Helpers --
-
-  /**
-   * Normalizes the correct answer to handle both full text answers and single letter answers (A, B, C, D).
-   */
+ 
   const getCorrectAnswerText = (question: Question) => {
     const isLetterAnswer =
       question.correctAnswer.length === 1 &&
@@ -42,7 +38,7 @@ export default function QuizPage() {
       question.correctAnswer <= "Z";
       
     if (isLetterAnswer) {
-      const index = question.correctAnswer.charCodeAt(0) - 65; // 'A' -> 0, 'B' -> 1
+      const index = question.correctAnswer.charCodeAt(0) - 65; 
       return question.options[index];
     }
     
@@ -61,9 +57,7 @@ export default function QuizPage() {
     return 1;
   };
 
-  // -- Effects --
-
-  // 1. Fetch Quiz Data
+  
   useEffect(() => {
     const fetchQuiz = async () => {
       try {
@@ -82,7 +76,7 @@ export default function QuizPage() {
     }
   }, [quizId]);
 
-  // 2. Handle Auto-Submission when finished
+
   const isQuizCompleted =
     quiz && quiz.questions.length > 0 &&
     Object.keys(selectedAnswers).length === quiz.questions.length;
@@ -114,13 +108,13 @@ export default function QuizPage() {
     }
   }, [isQuizCompleted, quiz, quizId, score, selectedAnswers, isSubmitting]);
 
-  // -- Handlers --
+  
 
   const handleOptionSelect = (questionId: number, option: string) => {
-    // Prevent changing answer once selected
+    
     if (selectedAnswers[questionId]) return;
 
-    // Check correctness immediately to update local score
+    
     const question = quiz?.questions.find((q) => q.id === questionId);
     if (question && isAnswerCorrect(question, option)) {
       setScore((prev) => prev + 1);
@@ -132,7 +126,7 @@ export default function QuizPage() {
     }));
   };
 
-  // -- Render States --
+ 
 
   if (loading || !quiz) {
     return (
@@ -177,11 +171,11 @@ export default function QuizPage() {
     );
   }
 
-  // -- Main Render --
+  
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-indigo-950 text-white p-4 md:p-8 relative font-sans">
       
-      {/* Floating Score Badge */}
+      
       <div className="fixed top-6 right-6 z-50">
         <div className="bg-gray-900/90 backdrop-blur-md px-6 py-3 rounded-full shadow-lg border border-indigo-500/30 flex items-center gap-3">
           <span className="text-gray-400 text-sm font-medium uppercase tracking-wider">Current Score</span>
@@ -189,7 +183,7 @@ export default function QuizPage() {
         </div>
       </div>
 
-      {/* Back Button */}
+      
       <div className="fixed top-6 left-6 z-50">
         <button 
           onClick={() => router.push('/dashboard')}
@@ -269,7 +263,7 @@ export default function QuizPage() {
                   })}
                 </div>
 
-                {/* Feedback Section */}
+                
                 {isAnswered && (
                   <div
                     className={`mt-6 p-5 rounded-2xl text-center border ${

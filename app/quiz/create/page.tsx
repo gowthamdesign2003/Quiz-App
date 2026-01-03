@@ -4,24 +4,22 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import axios from "axios";
 
-// -- Components --
-
 export default function CreateQuizPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  // -- Params --
+
 
   const topic = searchParams.get("topic");
   const count = searchParams.get("count");
   const difficulty = searchParams.get("difficulty");
 
-  // -- Effects --
+
 
   useEffect(() => {
-    // If missing params, do nothing (or redirect back)
+  
     if (!topic || !count || !difficulty) {
-      // router.replace("/dashboard"); // Optional: redirect if params missing
+      
       return;
     }
 
@@ -33,7 +31,7 @@ export default function CreateQuizPage() {
           difficulty,
         });
 
-        // Redirect to the newly created quiz
+      
         router.replace(`/quiz/${res.data.quizId}`);
       } catch (err) {
         console.error("Quiz generation failed:", err);
@@ -45,7 +43,7 @@ export default function CreateQuizPage() {
     generateQuiz();
   }, [topic, count, difficulty, router]);
 
-  // -- Render --
+ 
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-indigo-950 text-white">

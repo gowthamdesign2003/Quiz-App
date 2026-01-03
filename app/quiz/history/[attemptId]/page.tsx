@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
 
-// -- Types --
+
 
 interface Question {
   id: number;
@@ -24,7 +24,7 @@ interface QuizAttempt {
   id: number;
   score: number;
   createdAt: string;
-  responses: Record<string, string>; // questionId -> selectedOption
+  responses: Record<string, string>; 
   quiz: Quiz;
 }
 
@@ -62,7 +62,7 @@ export default function HistoryPage() {
     }
   }, [attemptId, router]);
 
-  // -- Helpers --
+
 
   const getCorrectAnswerText = (question: Question) => {
     const isLetterAnswer =
@@ -94,7 +94,7 @@ export default function HistoryPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-indigo-950 text-white p-4 md:p-8 relative font-sans">
       
-      {/* Back Button */}
+      
       <div className="fixed top-6 left-6 z-50">
         <button 
           onClick={() => router.push('/dashboard')}
@@ -107,7 +107,7 @@ export default function HistoryPage() {
 
       <div className="max-w-4xl mx-auto pt-16 pb-24">
         
-        {/* Header Summary */}
+      
         <div className="text-center mb-12">
           <h1 className="text-3xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-purple-400">
             {quiz.topic}
@@ -137,7 +137,7 @@ export default function HistoryPage() {
           </div>
         </div>
 
-        {/* Questions Review */}
+     
         <div className="space-y-10">
           {quiz.questions.map((question, index) => {
             const userAnswer = attempt.responses[question.id];
