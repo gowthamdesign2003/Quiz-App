@@ -101,7 +101,7 @@ export default function HistoryPage() {
           className="bg-gray-900/90 backdrop-blur-md px-6 py-3 rounded-full shadow-lg border border-gray-700 hover:border-indigo-500 text-gray-300 hover:text-white flex items-center gap-2"
         >
           <span>←</span>
-          <span className="font-medium">Dashboard</span>
+          <span className="font-medium">Back</span>
         </button>
       </div>
 
