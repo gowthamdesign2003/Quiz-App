@@ -36,7 +36,10 @@ export async function POST(req: Request) {
     });
 
     // 3. AI Prompt (Request JSON format)
-    const prompt = `
+    let questions = [];
+
+    try {
+      const prompt = `
 You are an API that returns ONLY valid JSON.
 Do NOT include markdown.
 Do NOT include backticks.
@@ -57,25 +60,40 @@ Difficulty: ${difficulty}
 Number of questions: ${numberOfQuestions}
 `;
 
-    const aiRes = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
-      messages: [{ role: "user", content: prompt }],
-      response_format: { type: "json_object" },
-    });
+      const aiRes = await openai.chat.completions.create({
+        model: "gpt-4o-mini",
+        messages: [{ role: "user", content: prompt }],
+        response_format: { type: "json_object" },
+      });
 
-    const content = aiRes.choices[0]?.message?.content;
+      const content = aiRes.choices[0]?.message?.content;
 
-    if (!content) {
-      throw new Error("Empty AI response");
+      if (!content) {
+        throw new Error("Empty AI response");
+      }
+
+      const parsed = JSON.parse(content);
+
+      if (!parsed.questions || !Array.isArray(parsed.questions)) {
+        throw new Error("Invalid AI JSON structure");
+      }
+
+      questions = parsed.questions;
+    } catch (aiError) {
+      console.error("OpenAI API Failed, using fallback:", aiError);
+      
+      // Fallback generation
+      questions = Array.from({ length: numberOfQuestions }).map((_, i) => ({
+        question: `[Fallback] Question ${i + 1} about ${topic} (${difficulty})`,
+        options: [
+          `Answer A for ${topic}`,
+          `Answer B for ${topic}`,
+          `Answer C for ${topic}`,
+          `Answer D for ${topic}`,
+        ],
+        correctAnswer: "A",
+      }));
     }
-
-    const parsed = JSON.parse(content);
-
-    if (!parsed.questions || !Array.isArray(parsed.questions)) {
-      throw new Error("Invalid AI JSON structure");
-    }
-
-    const questions = parsed.questions;
 
     // 4. Save Questions to Database
     // Use Promise.all for parallel creation if desired, or sequential loop

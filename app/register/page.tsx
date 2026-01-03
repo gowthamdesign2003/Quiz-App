@@ -68,7 +68,7 @@ export default function Register() {
 
         {/* Error Message */}
         {error && (
-          <div className="mb-6 p-4 bg-red-500/10 border border-red-500/50 rounded-lg text-red-400 text-sm text-center animate-pulse">
+          <div className="mb-6 p-4 bg-red-500/10 border border-red-500/50 rounded-lg text-red-400 text-sm text-center">
             {error}
           </div>
         )}
@@ -80,7 +80,7 @@ export default function Register() {
               Full Name
             </label>
             <input
-              className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all text-white placeholder-gray-500"
+              className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-white placeholder-gray-500"
               placeholder="John Doe"
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
@@ -93,7 +93,7 @@ export default function Register() {
               Email Address
             </label>
             <input
-              className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all text-white placeholder-gray-500"
+              className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-white placeholder-gray-500"
               type="email"
               placeholder="name@example.com"
               value={form.email}
@@ -107,7 +107,7 @@ export default function Register() {
               Password
             </label>
             <input
-              className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all text-white placeholder-gray-500"
+              className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-white placeholder-gray-500"
               type="password"
               placeholder="••••••••"
               value={form.password}
@@ -119,14 +119,14 @@ export default function Register() {
           <button
             type="submit"
             disabled={loading}
-            className={`w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg shadow-lg shadow-indigo-500/20 transition-all duration-200 transform hover:-translate-y-0.5 ${
+            className={`w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg shadow-lg shadow-indigo-500/20 ${
               loading ? "opacity-70 cursor-not-allowed" : ""
             }`}
           >
             {loading ? (
               <span className="flex items-center justify-center">
                 <svg
-                  className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                  className="-ml-1 mr-3 h-5 w-5 text-white"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
@@ -158,7 +158,7 @@ export default function Register() {
           Already have an account?{" "}
           <Link
             href="/login"
-            className="text-indigo-400 hover:text-indigo-300 font-medium hover:underline transition-colors"
+            className="text-indigo-400 hover:text-indigo-300 font-medium hover:underline"
           >
             Sign in
           </Link>

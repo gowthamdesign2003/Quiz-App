@@ -52,8 +52,8 @@ export default function CreateQuizPage() {
       <div className="flex flex-col items-center gap-6 p-8 bg-gray-900/50 backdrop-blur-sm rounded-xl border border-gray-700/50 shadow-2xl">
         {/* Spinner */}
         <div className="relative">
-          <div className="h-16 w-16 rounded-full border-b-4 border-indigo-500 animate-spin"></div>
-          <div className="absolute top-0 left-0 h-16 w-16 rounded-full border-t-4 border-indigo-500/30 animate-pulse"></div>
+          <div className="h-16 w-16 rounded-full border-b-4 border-indigo-500"></div>
+          <div className="absolute top-0 left-0 h-16 w-16 rounded-full border-t-4 border-indigo-500/30"></div>
         </div>
 
         {/* Text */}
@@ -61,7 +61,7 @@ export default function CreateQuizPage() {
           <h2 className="text-2xl font-bold tracking-tight text-white">
             Generating your quiz...
           </h2>
-          <p className="text-gray-400 text-sm animate-pulse">
+          <p className="text-gray-400 text-sm">
             Our AI is crafting challenging questions for you
           </p>
         </div>

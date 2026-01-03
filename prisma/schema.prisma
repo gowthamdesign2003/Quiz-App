@@ -30,6 +30,8 @@ model Quiz {
   difficulty String
   totalQs    Int
   createdAt  DateTime   @default(now())
+
+
   userId     Int?
   user       User?      @relation(fields: [userId], references: [id])
 

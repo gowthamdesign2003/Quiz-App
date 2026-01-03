@@ -138,8 +138,8 @@ export default function QuizPage() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-indigo-950 text-white">
         <div className="flex flex-col items-center gap-4">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-400"></div>
-          <p className="text-gray-400 animate-pulse">Loading Quiz...</p>
+          <div className="rounded-full h-12 w-12 border-b-2 border-indigo-400"></div>
+          <p className="text-gray-400">Loading Quiz...</p>
         </div>
       </div>
     );
@@ -150,12 +150,12 @@ export default function QuizPage() {
     
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-indigo-950 text-white flex flex-col items-center justify-center p-8">
-        <div className="bg-gray-900/80 backdrop-blur-md p-12 rounded-3xl shadow-2xl border border-gray-700 text-center max-w-lg w-full transform transition-all hover:scale-105">
+        <div className="bg-gray-900/80 backdrop-blur-md p-12 rounded-3xl shadow-2xl border border-gray-700 text-center max-w-lg w-full">
           <h1 className="text-4xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-purple-400">
             Quiz Completed!
           </h1>
           
-          <div className="text-7xl mb-8 animate-bounce delay-150">
+          <div className="text-7xl mb-8">
             {"⭐".repeat(stars)}
           </div>
           
@@ -168,7 +168,7 @@ export default function QuizPage() {
 
           <button
             onClick={() => router.push("/dashboard")}
-            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 px-8 rounded-xl transition-all duration-200 shadow-lg shadow-indigo-500/20 transform hover:-translate-y-1 active:translate-y-0"
+            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 px-8 rounded-xl shadow-lg shadow-indigo-500/20"
           >
             Return to Dashboard
           </button>
@@ -189,6 +189,17 @@ export default function QuizPage() {
         </div>
       </div>
 
+      {/* Back Button */}
+      <div className="fixed top-6 left-6 z-50">
+        <button 
+          onClick={() => router.push('/dashboard')}
+          className="bg-gray-900/90 backdrop-blur-md px-6 py-3 rounded-full shadow-lg border border-gray-700 hover:border-indigo-500 text-gray-300 hover:text-white flex items-center gap-2"
+        >
+          <span>←</span>
+          <span className="font-medium">Back</span>
+        </button>
+      </div>
+
       <div className="max-w-4xl mx-auto pt-16 pb-24">
         <h1 className="text-3xl md:text-5xl font-bold mb-12 text-center bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-purple-400">
           {quiz.topic}
@@ -204,7 +215,7 @@ export default function QuizPage() {
             return (
               <div 
                 key={question.id} 
-                className="bg-gray-900/60 backdrop-blur-md p-6 md:p-8 rounded-3xl shadow-xl border border-gray-700/50 transition-all duration-300 hover:border-indigo-500/30"
+                className="bg-gray-900/60 backdrop-blur-md p-6 md:p-8 rounded-3xl shadow-xl border border-gray-700/50"
               >
                 <h3 className="font-medium mb-8 text-xl md:text-2xl text-gray-100 leading-relaxed">
                   <span className="text-indigo-400 font-bold mr-3">{index + 1}.</span> 
@@ -217,7 +228,7 @@ export default function QuizPage() {
                     const isThisCorrect = option === correctAnswer;
 
                     // Determine button styling based on state
-                    let buttonStyles = "relative w-full text-left p-4 rounded-xl border-2 transition-all duration-200 font-medium ";
+                    let buttonStyles = "relative w-full text-left p-4 rounded-xl border-2 font-medium ";
                     
                     if (isAnswered) {
                       if (isThisCorrect) {
@@ -228,7 +239,7 @@ export default function QuizPage() {
                         buttonStyles += "bg-gray-800/30 border-gray-700/30 text-gray-500 opacity-50";
                       }
                     } else {
-                      buttonStyles += "bg-gray-800/50 border-gray-700 hover:bg-gray-700/80 hover:border-indigo-500 hover:shadow-indigo-500/10 text-gray-300 hover:text-white transform hover:-translate-y-0.5 active:translate-y-0";
+                      buttonStyles += "bg-gray-800/50 border-gray-700 text-gray-300";
                     }
 
                     return (
@@ -240,10 +251,10 @@ export default function QuizPage() {
                       >
                         <div className="flex justify-between items-center relative z-10">
                           <div className="flex items-center gap-4">
-                            <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold transition-colors ${
+                            <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold ${
                               isAnswered && isThisCorrect ? 'bg-green-500 text-white' :
                               isAnswered && isSelected ? 'bg-red-500 text-white' :
-                              'bg-gray-700 text-gray-400 group-hover:bg-indigo-500 group-hover:text-white'
+                              'bg-gray-700 text-gray-400'
                             }`}>
                               {String.fromCharCode(65 + optIndex)}
                             </span>
@@ -261,7 +272,7 @@ export default function QuizPage() {
                 {/* Feedback Section */}
                 {isAnswered && (
                   <div
-                    className={`mt-6 p-5 rounded-2xl text-center border animate-in fade-in slide-in-from-top-2 duration-300 ${
+                    className={`mt-6 p-5 rounded-2xl text-center border ${
                       isCorrect
                         ? "bg-green-500/10 text-green-300 border-green-500/20"
                         : "bg-red-500/10 text-red-300 border-red-500/20"
