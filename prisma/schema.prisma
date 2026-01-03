@@ -21,6 +21,7 @@ model User {
   email     String   @unique
   password  String
   quizzes   Quiz[]
+  attempts  QuizAttempt[]
 }
 
 model Quiz {
@@ -29,15 +30,12 @@ model Quiz {
   difficulty String
   totalQs    Int
   createdAt  DateTime   @default(now())
-
-  // 🔥 MAKE USER OPTIONAL
   userId     Int?
   user       User?      @relation(fields: [userId], references: [id])
 
   questions  Question[]
+  attempts   QuizAttempt[]
 }
-
-
 
 model Question {
   id             Int    @id @default(autoincrement())
@@ -46,4 +44,15 @@ model Question {
   question       String
   options        Json
   correctAnswer  String
+}
+
+model QuizAttempt {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  quizId    Int
+  quiz      Quiz     @relation(fields: [quizId], references: [id])
+  score     Int
+  responses Json
+  createdAt DateTime @default(now())
 }

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import OpenAI from "openai";
+import { getUserFromToken } from "@/lib/auth";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY!,
@@ -8,38 +9,39 @@ const openai = new OpenAI({
 
 export async function POST(req: Request) {
   try {
+    const user = getUserFromToken(req); // Link quiz to user if logged in
     const { topic, numberOfQuestions, difficulty } = await req.json();
 
-    // ✅ Validation
+    // 1. Validation
     if (
       !topic ||
       typeof topic !== "string" ||
-      numberOfQuestions < 5 ||
+      numberOfQuestions < 1 ||
       numberOfQuestions > 20
     ) {
       return NextResponse.json(
-        { error: "Invalid input" },
+        { error: "Invalid input parameters" },
         { status: 400 }
       );
     }
 
-    // 1️⃣ Create quiz (NO USER)
+    // 2. Create Quiz Record
     const quiz = await prisma.quiz.create({
       data: {
         topic,
         difficulty,
         totalQs: numberOfQuestions,
+        userId: user?.userId || null,
       },
     });
 
-    // 2️⃣ AI Prompt (STRICT JSON ONLY)
+    // 3. AI Prompt (Request JSON format)
     const prompt = `
 You are an API that returns ONLY valid JSON.
 Do NOT include markdown.
 Do NOT include backticks.
 
 Return EXACTLY this structure:
-
 {
   "questions": [
     {
@@ -75,14 +77,11 @@ Number of questions: ${numberOfQuestions}
 
     const questions = parsed.questions;
 
-    // 3️⃣ Save questions
+    // 4. Save Questions to Database
+    // Use Promise.all for parallel creation if desired, or sequential loop
     for (const q of questions) {
-      if (
-        !q.question ||
-        !Array.isArray(q.options) ||
-        !q.correctAnswer
-      ) {
-        continue; // skip invalid question
+      if (!q.question || !Array.isArray(q.options) || !q.correctAnswer) {
+        continue; // Skip invalid questions
       }
 
       await prisma.question.create({
@@ -95,7 +94,7 @@ Number of questions: ${numberOfQuestions}
       });
     }
 
-    // 4️⃣ Success
+    // 5. Success Response
     return NextResponse.json({ quizId: quiz.id });
   } catch (err) {
     console.error("QUIZ CREATE ERROR:", err);

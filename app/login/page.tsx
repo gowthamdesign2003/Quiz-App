@@ -1,57 +1,162 @@
 "use client";
+
 import { useState } from "react";
 import axios from "axios";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+
+// -- Types --
+
+interface LoginForm {
+  email: string;
+  password: string;
+}
 
 export default function Login() {
-  const [form, setForm] = useState({ email: "", password: "" });
+  const router = useRouter();
 
-  const doLogin = async () => {
+  // -- State --
+
+  const [form, setForm] = useState<LoginForm>({ email: "", password: "" });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  // -- Handlers --
+
+  /**
+   * Handles the login form submission.
+   * Sends credentials to the API and redirects to dashboard on success.
+   */
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+
     try {
       const res = await axios.post("/api/auth/login", form);
 
-     
+      // Store token (consider using HttpOnly cookies in production for better security)
       localStorage.setItem("token", res.data.token);
 
-      alert("Login successful!");
-
       // Redirect to dashboard
-      window.location.href = "/dashboard";
-
+      router.push("/dashboard");
     } catch (error: any) {
-      alert(error.response?.data?.error || "Login failed");
+      console.error("Login Error:", error);
+      setError(
+        error.response?.data?.error || "Login failed. Please try again."
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
+  /**
+   * Updates form state on input change.
+   */
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { type, value } = e.target;
+    // Map input type to state key if names match, or use specific logic
+    // Here we can just use the state update directly in the input's onChange for simplicity,
+    // or use a generic handler if we add name attributes.
+  };
+
+  // -- Render --
+
   return (
-    <div className="max-w-sm mx-auto mt-20 p-6 bg-gray-900 rounded-lg">
-      <h2 className="text-xl font-bold mb-4">Login</h2>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-indigo-950 p-4">
+      <div className="w-full max-w-md bg-gray-900/80 backdrop-blur-sm p-8 rounded-2xl shadow-2xl border border-gray-700">
+        
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-white mb-2">Welcome Back</h1>
+          <p className="text-gray-400">Sign in to continue your quiz journey</p>
+        </div>
 
-      <input
-        className="mb-3 p-2 w-full"
-        type="email"
-        placeholder="Email"
-        onChange={(e) => setForm({ ...form, email: e.target.value })}
-      />
+        {/* Error Message */}
+        {error && (
+          <div className="mb-6 p-4 bg-red-500/10 border border-red-500/50 rounded-lg text-red-400 text-sm text-center animate-pulse">
+            {error}
+          </div>
+        )}
 
-      <input
-        className="mb-3 p-2 w-full"
-        type="password"
-        placeholder="Password"
-        onChange={(e) => setForm({ ...form, password: e.target.value })}
-      />
+        {/* Login Form */}
+        <form onSubmit={handleLogin} className="space-y-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-2">
+              Email Address
+            </label>
+            <input
+              className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all text-white placeholder-gray-500"
+              type="email"
+              placeholder="name@example.com"
+              value={form.email}
+              onChange={(e) => setForm({ ...form, email: e.target.value })}
+              required
+            />
+          </div>
 
-      <button
-        className="w-full bg-indigo-600 py-2 rounded"
-        onClick={doLogin}
-      >
-        Login
-      </button>
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-2">
+              Password
+            </label>
+            <input
+              className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all text-white placeholder-gray-500"
+              type="password"
+              placeholder="••••••••"
+              value={form.password}
+              onChange={(e) => setForm({ ...form, password: e.target.value })}
+              required
+            />
+          </div>
 
-      {/* ⭐ Already have account / new account */}
-      <p className="text-center mt-4 text-sm">
-        Don't have an account?{" "}
-        <a href="/register" className="text-blue-400 underline">Register</a>
-      </p>
+          <button
+            type="submit"
+            disabled={loading}
+            className={`w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg shadow-lg shadow-indigo-500/20 transition-all duration-200 transform hover:-translate-y-0.5 ${
+              loading ? "opacity-70 cursor-not-allowed" : ""
+            }`}
+          >
+            {loading ? (
+              <span className="flex items-center justify-center">
+                <svg
+                  className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+                Signing in...
+              </span>
+            ) : (
+              "Sign In"
+            )}
+          </button>
+        </form>
+
+        {/* Footer */}
+        <p className="text-center mt-8 text-gray-400">
+          Don't have an account?{" "}
+          <Link
+            href="/register"
+            className="text-indigo-400 hover:text-indigo-300 font-medium hover:underline transition-colors"
+          >
+            Create account
+          </Link>
+        </p>
+      </div>
     </div>
   );
 }
